@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Utkarsh Bagaria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --black:#080808;
+  --black2:#0e0e0e;
+  --black3:#141414;
+  --black4:#1c1c1c;
+  --border:#2a2a2a;
+  --border2:#333;
+  --white:#f5f0eb;
+  --white2:#e8e0d5;
+  --muted:#6b6460;
+  --muted2:#8a817a;
+  --rose:#e8b4b8;
+  --rose2:#d4949a;
+  --rose3:#c07078;
+  --rose-dim:#3d1f22;
+  --rose-glow:rgba(232,180,184,0.06);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Outfit',sans-serif;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--black);
+  color:var(--white2);
+  font-family:var(--sans);
+  font-size:15px;
+  font-weight:300;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* grain overlay */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  pointer-events:none;z-index:1000;
+  opacity:.028;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:256px;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.4rem 3rem;
+  background:rgba(8,8,8,0);
+  transition:background .4s,border-color .4s;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{
+  background:rgba(8,8,8,.92);
+  backdrop-filter:blur(20px);
+  border-bottom-color:var(--border);
+}
+.nav-brand{
+  font-family:var(--serif);
+  font-size:1.15rem;
+  font-weight:400;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--white);
+  text-decoration:none;
+}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{
+  color:var(--muted2);
+  text-decoration:none;
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-weight:400;
+  transition:color .25s;
+}
+.nav-links a:hover{color:var(--rose)}
+.nav-open{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:.4rem}
+.nav-open span{display:block;width:22px;height:1px;background:var(--white2);transition:all .3s}
+.mobile-menu{
+  display:none;position:fixed;inset:0;z-index:190;
+  background:var(--black);
+  flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:var(--serif);font-size:2.5rem;color:var(--white2);text-decoration:none;letter-spacing:.06em;transition:color .2s}
+.mobile-menu a:hover{color:var(--rose)}
+.mobile-close{position:absolute;top:1.5rem;right:2rem;background:none;border:none;color:var(--muted2);font-size:1.5rem;cursor:pointer}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  padding:0 3rem 5rem;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 50% at 70% 40%, rgba(232,180,184,.07) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.hero-eyebrow{
+  display:flex;align-items:center;gap:1rem;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--rose);font-weight:400;
+  margin-bottom:1.5rem;
+  opacity:0;animation:fadeUp .8s .2s forwards;
+}
+.hero-eyebrow::before{content:'';display:block;width:32px;height:1px;background:var(--rose)}
+
+h1.hero-title{
+  font-family:var(--serif);
+  font-size:clamp(4.5rem,11vw,10rem);
+  font-weight:300;
+  line-height:.88;
+  letter-spacing:-.01em;
+  color:var(--white);
+  margin-bottom:2.5rem;
+  opacity:0;animation:fadeUp .9s .35s forwards;
+}
+h1.hero-title em{
+  font-style:italic;
+  color:var(--rose);
+}
+
+.hero-bottom{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  opacity:0;animation:fadeUp .8s .55s forwards;
+}
+.hero-desc{
+  max-width:440px;
+  font-size:14px;color:var(--muted2);line-height:1.85;
+  border-left:1px solid var(--rose-dim);
+  padding-left:1.25rem;
+}
+.hero-desc strong{color:var(--white2);font-weight:400}
+.hero-cta{display:flex;gap:1rem;flex-shrink:0}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  text-decoration:none;font-family:var(--sans);
+  font-size:11px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;
+  padding:.7rem 1.6rem;transition:all .25s;cursor:pointer;border:none;
+}
+.btn-rose{background:var(--rose);color:var(--black);border:1px solid var(--rose)}
+.btn-rose:hover{background:var(--rose2);border-color:var(--rose2)}
+.btn-ghost{background:transparent;color:var(--white2);border:1px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--rose);color:var(--rose)}
+
+/* ── DIVIDER ── */
+hr.rule{border:none;border-top:1px solid var(--border);max-width:1100px;margin:0 auto}
+
+/* ── SECTION BASE ── */
+.wrap{max-width:1100px;margin:0 auto;padding:0 3rem}
+section{padding:7rem 0;border-bottom:1px solid var(--border)}
+section:last-of-type{border-bottom:none}
+
+.s-label{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--rose);font-weight:400;margin-bottom:.75rem;
+  display:flex;align-items:center;gap:.75rem;
+}
+.s-label::after{content:'';flex:0 0 24px;height:1px;background:var(--rose);opacity:.5}
+
+h2.s-title{
+  font-family:var(--serif);
+  font-size:clamp(2.4rem,5vw,4.2rem);
+  font-weight:300;
+  letter-spacing:-.01em;
+  color:var(--white);
+  line-height:1;
+  margin-bottom:3rem;
+}
+h2.s-title em{font-style:italic;color:var(--rose)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .75s ease,transform .75s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ── ABOUT ── */
+.about-layout{display:grid;grid-template-columns:1fr 380px;gap:5rem;align-items:start}
+.about-text p{
+  color:var(--muted2);line-height:2;margin-bottom:1.2rem;font-size:14px;
+}
+.about-text p em{color:var(--rose);font-style:normal}
+.about-text p strong{color:var(--white2);font-weight:400}
+
+.about-card{
+  background:var(--black2);
+  border:1px solid var(--border);
+  padding:2rem;
+  position:sticky;top:6rem;
+}
+.about-card-label{
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--rose);margin-bottom:1.5rem;opacity:.7;
+}
+.about-stat{
+  padding:1rem 0;border-bottom:1px solid var(--border);
+  display:flex;align-items:baseline;justify-content:space-between;
+  font-size:12px;
+}
+.about-stat:last-child{border-bottom:none}
+.about-stat-key{color:var(--muted);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.about-stat-val{color:var(--white2);font-weight:400;text-align:right}
+.about-stat-val.hl{color:var(--rose)}
+
+/* ── EDUCATION ── */
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.edu-card{
+  border:1px solid var(--border);
+  background:var(--black2);
+  padding:2rem;
+  transition:border-color .25s,background .25s;
+  position:relative;overflow:hidden;
+}
+.edu-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--rose-dim),var(--rose),var(--rose-dim));
+  transform:scaleX(0);transition:transform .4s;
+}
+.edu-card:hover{border-color:var(--border2);background:var(--black3)}
+.edu-card:hover::before{transform:scaleX(1)}
+.edu-year{font-size:10px;letter-spacing:.12em;color:var(--rose);opacity:.6;margin-bottom:.5rem;text-transform:uppercase}
+.edu-degree{font-family:var(--serif);font-size:1.3rem;color:var(--white);font-weight:400;margin-bottom:.2rem;line-height:1.2}
+.edu-school{font-size:12px;color:var(--rose);margin-bottom:.75rem;letter-spacing:.04em}
+.edu-detail{font-size:12px;color:var(--muted2);line-height:1.8}
+
+/* ── SKILLS — circuit schematic ── */
+.circuit-wrap{position:relative;width:100%}
+.circuit-svg{display:block;width:100%;max-width:760px;margin:0 auto}
+.comp-hit{cursor:pointer}
+.comp-hit:hover .comp-hl{opacity:1}
+.comp-hl{opacity:0;transition:opacity .2s}
+.circuit-legend{display:flex;gap:2rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap}
+.circuit-legend-item{display:flex;align-items:center;gap:.5rem;font-size:11px;color:var(--muted2);letter-spacing:.06em}
+.circuit-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.circuit-tooltip{
+  position:absolute;background:var(--black2);border:1px solid var(--rose-dim);
+  padding:.85rem 1.1rem;pointer-events:none;opacity:0;
+  transition:opacity .18s;min-width:150px;z-index:50;
+}
+.circuit-tooltip.show{opacity:1}
+.circuit-tooltip-title{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--rose);margin-bottom:.6rem;font-family:var(--sans)}
+.circuit-tooltip-item{font-size:13px;color:var(--white2);display:block;padding:.12rem 0;font-weight:300}
+.circuit-note{text-align:center;font-size:11px;color:var(--muted);letter-spacing:.08em;margin-top:1rem}
+
+/* ── PROJECTS ── */
+.projects-list{display:flex;flex-direction:column;gap:0}
+.project-row{
+  display:grid;grid-template-columns:80px 1fr 1fr auto;
+  align-items:center;gap:2rem;
+  padding:2rem 0;border-bottom:1px solid var(--border);
+  text-decoration:none;color:inherit;
+  transition:background .2s;position:relative;
+  cursor:pointer;
+}
+.project-row::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:var(--rose);transform:scaleX(0);transform-origin:left;
+  transition:transform .4s;
+}
+.project-row:hover::after{transform:scaleX(1)}
+.project-row:hover .project-num{color:var(--rose)}
+.project-row:hover .project-title{color:var(--rose)}
+.project-num{font-family:var(--serif);font-size:.9rem;color:var(--muted);font-style:italic;transition:color .25s}
+.project-title{font-family:var(--serif);font-size:1.5rem;color:var(--white);font-weight:400;transition:color .25s;line-height:1.1}
+.project-desc{font-size:12px;color:var(--muted2);line-height:1.7}
+.project-tags{display:flex;gap:.5rem;justify-content:flex-end;flex-wrap:wrap}
+.ptag{
+  font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  padding:.25rem .6rem;border:1px solid var(--border2);color:var(--muted2);
+}
+.project-expand{
+  background:var(--black2);border:1px solid var(--border);
+  padding:1.5rem 2rem;margin-top:0;
+  display:none;grid-column:1/-1;
+  font-size:13px;color:var(--muted2);line-height:1.9;
+  border-top:none;
+}
+.project-expand.open{display:block}
+.project-expand strong{color:var(--white2);font-weight:400;display:block;margin-bottom:.5rem;font-family:var(--serif);font-size:1rem;font-style:italic}
+
+/* discovery feature */
+.discovery-feature{
+  margin-top:3rem;
+  border:1px solid var(--rose-dim);
+  background:rgba(61,31,34,.15);
+  padding:2.5rem;position:relative;overflow:hidden;
+}
+.discovery-feature::before{
+  content:'FEATURED';position:absolute;top:1.25rem;right:1.5rem;
+  font-size:9px;letter-spacing:.18em;color:var(--rose);opacity:.5;
+}
+.discovery-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--rose);margin-bottom:1rem;opacity:.8}
+.discovery-title{font-family:var(--serif);font-size:2rem;color:var(--white);font-weight:400;font-style:italic;margin-bottom:.75rem}
+.discovery-desc{font-size:13px;color:var(--muted2);line-height:1.9;max-width:640px;margin-bottom:1.5rem}
+.discovery-placeholder{
+  border:1px dashed var(--border2);
+  height:200px;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:12px;letter-spacing:.08em;margin-bottom:1.5rem;
+  background:var(--black3);
+}
+
+/* ── EXPERIENCE ── */
+.exp-list{display:flex;flex-direction:column;gap:0}
+.exp-item{
+  display:grid;grid-template-columns:160px 1fr;gap:3rem;
+  padding:2.5rem 0;border-bottom:1px solid var(--border);
+  opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;
+}
+.exp-item.in{opacity:1;transform:none}
+.exp-left{padding-top:.2rem}
+.exp-date{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--rose);opacity:.6;margin-bottom:.4rem}
+.exp-org{font-size:11px;color:var(--muted2);line-height:1.5}
+.exp-role{font-family:var(--serif);font-size:1.25rem;color:var(--white);font-weight:400;margin-bottom:.25rem;line-height:1.1}
+.exp-type{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--rose);opacity:.7;margin-bottom:.6rem}
+.exp-desc{font-size:13px;color:var(--muted2);line-height:1.85;max-width:580px}
+
+/* ── RESUME ── */
+.resume-inner{
+  display:grid;grid-template-columns:1fr 300px;gap:4rem;align-items:center;
+}
+.resume-text p{font-size:14px;color:var(--muted2);line-height:1.95;margin-bottom:1rem}
+.resume-text p strong{color:var(--white2);font-weight:400}
+.resume-aside{display:flex;flex-direction:column;gap:1rem}
+.resume-meta{
+  border:1px solid var(--border);padding:1.5rem;background:var(--black2);
+}
+.resume-meta-row{display:flex;justify-content:space-between;font-size:11px;padding:.4rem 0;border-bottom:1px solid var(--border)}
+.resume-meta-row:last-child{border-bottom:none}
+.resume-meta-key{color:var(--muted);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+.resume-meta-val{color:var(--white2)}
+
+/* ── CONTACT ── */
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start}
+.contact-intro{font-size:14px;color:var(--muted2);line-height:1.95;margin-bottom:2.5rem}
+.contact-links{display:flex;flex-direction:column;gap:0}
+.contact-link{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 0;border-bottom:1px solid var(--border);
+  text-decoration:none;color:var(--muted2);font-size:12px;
+  letter-spacing:.04em;transition:color .2s;
+  position:relative;overflow:hidden;
+}
+.contact-link span.type{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);width:60px}
+.contact-link span.arrow{font-size:.8rem;color:var(--muted);transition:color .2s,transform .2s}
+.contact-link:hover{color:var(--white)}
+.contact-link:hover span.arrow{color:var(--rose);transform:translate(3px,-3px)}
+
+.contact-form{display:flex;flex-direction:column;gap:1rem}
+.form-field{display:flex;flex-direction:column;gap:.4rem}
+.form-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:400}
+.contact-form input,.contact-form textarea{
+  background:transparent;
+  border:none;border-bottom:1px solid var(--border2);
+  padding:.65rem 0;
+  color:var(--white2);font-family:var(--sans);font-size:13px;font-weight:300;
+  outline:none;transition:border-color .25s;
+  border-radius:0;
+}
+.contact-form input:focus,.contact-form textarea:focus{border-bottom-color:var(--rose)}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:var(--muted)}
+.contact-form textarea{height:100px;resize:none}
+
+/* ── FOOTER ── */
+footer{
+  padding:2.5rem 3rem;
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;color:var(--muted);letter-spacing:.06em;
+}
+footer a{color:var(--muted);text-decoration:none;transition:color .2s}
+footer a:hover{color:var(--rose)}
+.footer-mark{font-family:var(--serif);font-size:1rem;color:var(--border2)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  nav{padding:1.2rem 1.5rem}
+  .nav-links{display:none}
+  .nav-open{display:flex}
+  #hero{padding:0 1.5rem 4rem}
+  h1.hero-title{font-size:clamp(3.2rem,12vw,6rem)}
+  .hero-bottom{flex-direction:column;align-items:flex-start;gap:2rem}
+  .wrap{padding:0 1.5rem}
+  .about-layout,.skills-layout,.resume-inner,.contact-layout{grid-template-columns:1fr}
+  .about-card{position:static}
+  .edu-grid{grid-template-columns:1fr}
+  .project-row{grid-template-columns:50px 1fr;grid-template-rows:auto auto auto}
+  .project-tags{justify-content:flex-start;grid-column:2}
+  .project-row > .project-num{display:none}
+  .exp-item{grid-template-columns:1fr;gap:.5rem}
+  footer{flex-direction:column;gap:.75rem;text-align:center;padding:2rem 1.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#education" onclick="closeMobile()">Education</a>
+  <a href="#skills" onclick="closeMobile()">Skills</a>
+  <a href="#projects" onclick="closeMobile()">Projects</a>
+  <a href="#experience" onclick="closeMobile()">Experience</a>
+  <a href="#resume" onclick="closeMobile()">Resume</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-brand" href="#hero">Utkarsh Bagaria</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#resume">Resume</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-open" id="navOpen" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-eyebrow">Georgia Tech &nbsp;·&nbsp; ECE Student &nbsp;·&nbsp; Builder</div>
+  <h1 class="hero-title">
+    Utkarsh<br>
+    <em>Bagaria.</em>
+  </h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">
+      Building at the intersection of <strong>hardware and software.</strong>
+      From schematics and breadboards to shipped iOS apps — I learn best by
+      making things, breaking them, and understanding why they broke.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-rose" href="#projects">Projects</a>
+      <a class="btn btn-ghost" href="#contact">Say hello</a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <p class="s-label">About</p>
+    <h2 class="s-title">Who I <em>am</em></h2>
+  </div>
+  <div class="about-layout reveal">
+    <div class="about-text">
+      <p>
+        I am an Electrical and Computer Engineering student at Georgia Tech, still finding
+        my corner of a wide field — and genuinely excited about that process. I learn best
+        by building things: a concept does not fully click until I have implemented it,
+        broken it, and figured out exactly why.
+      </p>
+      <p>
+        On the technical side, I bring hands-on experience with embedded systems,
+        mixed-signal hardware, and software development. I am comfortable moving between
+        a schematic and a codebase without losing the thread — and I find the most
+        interesting problems live exactly at that boundary.
+      </p>
+      <p>
+        As <em>Senior Developer</em> in my university's iOS Club, I contribute to real
+        shipped applications while mentoring newer members through the gap between
+        knowing syntax and building something that actually works in production.
+      </p>
+      <p>
+        Alongside the technical work, I conduct research in communications systems at
+        the undergraduate level — gaining exposure to signal processing, experimental
+        methodology, and the discipline of academic writing.
+      </p>
+      <p>
+        What ties everything together is <em>genuine curiosity</em>. I do not need a
+        problem to be glamorous. I need it to be real, with measurable outcomes and
+        room to grow into something bigger than where it started.
+      </p>
+      <p>
+        I am actively seeking internship and research opportunities where careful
+        engineering meets real constraints and real users. If that sounds like
+        something you are working on, I would love to hear about it.
+      </p>
+    </div>
+    <div class="about-card">
+      <div class="about-card-label">Profile</div>
+      <div class="about-stat">
+        <span class="about-stat-key">University</span>
+        <span class="about-stat-val hl">Georgia Tech</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat-key">Degree</span>
+        <span class="about-stat-val">B.S. ECE</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat-key">iOS Club</span>
+        <span class="about-stat-val hl">Senior Developer</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat-key">Research</span>
+        <span class="about-stat-val">Comms Lab</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat-key">Focus</span>
+        <span class="about-stat-val">HW + SW</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat-key">Open to</span>
+        <span class="about-stat-val hl">Internships · Research</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="reveal">
+    <p class="s-label">Education</p>
+    <h2 class="s-title">Where I <em>study</em></h2>
+  </div>
+  <div class="edu-grid reveal">
+    <div class="edu-card">
+      <div class="edu-year">Current — 2027</div>
+      <div class="edu-degree">B.S. Electrical &amp; Computer Engineering</div>
+      <div class="edu-school">Georgia Institute of Technology</div>
+      <div class="edu-detail">
+        Pursuing a degree at one of the top-ranked engineering schools in the United States.
+        Coursework spanning circuits, signals and systems, embedded design, digital logic,
+        and software fundamentals. Active member of the iOS Club and undergraduate
+        research contributor.
+      </div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-year">Relevant Coursework</div>
+      <div class="edu-degree">Technical Foundation</div>
+      <div class="edu-school">Core &amp; elective modules</div>
+      <div class="edu-detail">
+        Circuits &amp; Electronics · Signals and Systems · Digital Logic Design ·
+        Embedded Systems · Data Structures · Object-Oriented Programming ·
+        Linear Algebra · Probability &amp; Statistics · Communications Theory.
+        Lab-heavy curriculum with emphasis on hands-on verification and design.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="reveal">
+    <p class="s-label">Skills &amp; Technologies</p>
+    <h2 class="s-title">What I <em>work with</em></h2>
+  </div>
+  <div class="circuit-wrap reveal" id="circuitWrap">
+
+    <svg class="circuit-svg" viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- ── WIRES ── -->
+      <!-- top-left → resistor -->
+      <line x1="60" y1="90" x2="175" y2="90" stroke="#2a2a2a" stroke-width="1.5"/>
+      <!-- resistor → top-right -->
+      <line x1="335" y1="90" x2="700" y2="90" stroke="#2a2a2a" stroke-width="1.5"/>
+      <!-- right side down -->
+      <line x1="700" y1="90" x2="700" y2="250" stroke="#2a2a2a" stroke-width="1.5"/>
+      <!-- bottom-right → inductor end -->
+      <line x1="700" y1="250" x2="530" y2="250" stroke="#2a2a2a" stroke-width="1.5"/>
+      <!-- inductor start → capacitor end -->
+      <line x1="370" y1="250" x2="270" y2="250" stroke="#2a2a2a" stroke-width="1.5"/>
+      <!-- capacitor start → bottom-left -->
+      <line x1="190" y1="250" x2="60" y2="250" stroke="#2a2a2a" stroke-width="1.5"/>
+      <!-- left side up -->
+      <line x1="60" y1="250" x2="60" y2="155" stroke="#2a2a2a" stroke-width="1.5"/>
+      <line x1="60" y1="105" x2="60" y2="90" stroke="#2a2a2a" stroke-width="1.5"/>
+
+      <!-- ── POWER SOURCE (left wire) ── -->
+      <line x1="46" y1="150" x2="74" y2="150" stroke="#e8b4b8" stroke-width="2.5"/>
+      <line x1="52" y1="140" x2="68" y2="140" stroke="#e8b4b8" stroke-width="1.2"/>
+      <line x1="46" y1="130" x2="74" y2="130" stroke="#e8b4b8" stroke-width="2.5"/>
+      <line x1="52" y1="120" x2="68" y2="120" stroke="#e8b4b8" stroke-width="1.2"/>
+      <line x1="46" y1="110" x2="74" y2="110" stroke="#e8b4b8" stroke-width="2.5"/>
+      <text x="84" y="134" font-size="9" fill="#e8b4b8" opacity=".45" font-family="Outfit,sans-serif" letter-spacing=".12em">V+</text>
+
+      <!-- ── GROUND (bottom-left) ── -->
+      <line x1="60" y1="250" x2="60" y2="268" stroke="#444" stroke-width="1.2"/>
+      <line x1="47" y1="268" x2="73" y2="268" stroke="#555" stroke-width="1.8"/>
+      <line x1="52" y1="275" x2="68" y2="275" stroke="#444" stroke-width="1.2"/>
+      <line x1="57" y1="281" x2="63" y2="281" stroke="#333" stroke-width="1"/>
+
+      <!-- corner dots -->
+      <circle cx="60"  cy="90"  r="3" fill="#333"/>
+      <circle cx="700" cy="90"  r="3" fill="#333"/>
+      <circle cx="700" cy="250" r="3" fill="#333"/>
+      <circle cx="60"  cy="250" r="3" fill="#333"/>
+
+      <!-- ── RESISTOR — R1 Languages (top wire) ── -->
+      <g class="comp-hit" id="comp-r">
+        <!-- hover highlight -->
+        <rect class="comp-hl" x="168" y="72" width="174" height="36" rx="3"
+          fill="#e8b4b8" fill-opacity=".06" stroke="#e8b4b8" stroke-width=".5" stroke-opacity=".3"/>
+        <!-- zigzag body -->
+        <polyline
+          points="175,90 188,73 202,107 216,73 230,107 244,73 258,107 272,73 286,107 300,73 314,90"
+          fill="none" stroke="#e8b4b8" stroke-width="1.6" stroke-linejoin="round"/>
+        <!-- ref labels -->
+        <text x="245" y="65" text-anchor="middle" font-size="9" fill="#e8b4b8" opacity=".4"
+          font-family="Outfit,sans-serif" letter-spacing=".12em">R1</text>
+        <text x="245" y="125" text-anchor="middle" font-size="10" fill="#e8b4b8" opacity=".55"
+          font-family="Outfit,sans-serif" letter-spacing=".1em">LANGUAGES</text>
+      </g>
+
+      <!-- ── CAPACITOR — C1 Software (bottom wire) ── -->
+      <g class="comp-hit" id="comp-c">
+        <rect class="comp-hl" x="183" y="232" width="94" height="36" rx="3"
+          fill="#b4c8e8" fill-opacity=".06" stroke="#b4c8e8" stroke-width=".5" stroke-opacity=".3"/>
+        <!-- wire in -->
+        <line x1="190" y1="250" x2="218" y2="250" stroke="#b4c8e8" stroke-width="1.6"/>
+        <!-- plate 1 -->
+        <line x1="218" y1="234" x2="218" y2="266" stroke="#b4c8e8" stroke-width="3"/>
+        <!-- gap -->
+        <!-- plate 2 -->
+        <line x1="230" y1="234" x2="230" y2="266" stroke="#b4c8e8" stroke-width="3"/>
+        <!-- wire out -->
+        <line x1="230" y1="250" x2="258" y2="250" stroke="#b4c8e8" stroke-width="1.6"/>
+        <!-- polarity + -->
+        <text x="212" y="228" text-anchor="middle" font-size="10" fill="#b4c8e8" opacity=".5"
+          font-family="Outfit,sans-serif">+</text>
+        <text x="224" y="218" text-anchor="middle" font-size="9" fill="#b4c8e8" opacity=".4"
+          font-family="Outfit,sans-serif" letter-spacing=".12em">C1</text>
+        <text x="224" y="290" text-anchor="middle" font-size="10" fill="#b4c8e8" opacity=".55"
+          font-family="Outfit,sans-serif" letter-spacing=".1em">SOFTWARE</text>
+      </g>
+
+      <!-- ── INDUCTOR — L1 Hardware (bottom wire) ── -->
+      <g class="comp-hit" id="comp-l">
+        <rect class="comp-hl" x="363" y="232" width="174" height="36" rx="3"
+          fill="#b4e8c8" fill-opacity=".06" stroke="#b4e8c8" stroke-width=".5" stroke-opacity=".3"/>
+        <!-- coil: 5 humps -->
+        <path d="M370,250 a16,16 0 0,1 32,0 a16,16 0 0,1 32,0 a16,16 0 0,1 32,0 a16,16 0 0,1 32,0 a16,16 0 0,1 32,0"
+          fill="none" stroke="#b4e8c8" stroke-width="1.8"/>
+        <text x="450" y="218" text-anchor="middle" font-size="9" fill="#b4e8c8" opacity=".4"
+          font-family="Outfit,sans-serif" letter-spacing=".12em">L1</text>
+        <text x="450" y="290" text-anchor="middle" font-size="10" fill="#b4e8c8" opacity=".55"
+          font-family="Outfit,sans-serif" letter-spacing=".1em">HARDWARE</text>
+      </g>
+
+      <!-- ── ANIMATED CURRENT DOT ── -->
+      <circle id="currentDot" r="4" fill="#e8b4b8" opacity=".85"/>
+
+    </svg>
+
+    <!-- Tooltips -->
+    <div class="circuit-tooltip" id="tip-r">
+      <div class="circuit-tooltip-title">R1 · Languages</div>
+      <span class="circuit-tooltip-item">Python</span>
+      <span class="circuit-tooltip-item">Swift</span>
+      <span class="circuit-tooltip-item">Java</span>
+    </div>
+    <div class="circuit-tooltip" id="tip-c">
+      <div class="circuit-tooltip-title">C1 · Software</div>
+      <span class="circuit-tooltip-item">iOS / SwiftUI</span>
+      <span class="circuit-tooltip-item">Xcode</span>
+      <span class="circuit-tooltip-item">Git</span>
+      <span class="circuit-tooltip-item">Firebase</span>
+      <span class="circuit-tooltip-item">Figma</span>
+    </div>
+    <div class="circuit-tooltip" id="tip-l">
+      <div class="circuit-tooltip-title">L1 · Hardware</div>
+      <span class="circuit-tooltip-item">Embedded Systems</span>
+      <span class="circuit-tooltip-item">PCB Design</span>
+      <span class="circuit-tooltip-item">Circuit Analysis</span>
+    </div>
+
+    <div class="circuit-legend">
+      <div class="circuit-legend-item"><div class="circuit-legend-dot" style="background:#e8b4b8"></div>R1 — Languages</div>
+      <div class="circuit-legend-item"><div class="circuit-legend-dot" style="background:#b4c8e8"></div>C1 — Software</div>
+      <div class="circuit-legend-item"><div class="circuit-legend-dot" style="background:#b4e8c8"></div>L1 — Hardware</div>
+    </div>
+    <p class="circuit-note">// hover any component to inspect · current flows continuously</p>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="reveal">
+    <p class="s-label">Projects</p>
+    <h2 class="s-title">Things I've <em>built</em></h2>
+  </div>
+
+  <!-- Discovery Project Feature -->
+  <div class="discovery-feature reveal">
+    <div class="discovery-label">Discovery Project — ECE 1100 · Spring 2026</div>
+    <div class="discovery-title">Backscatter Communication Circuit</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:2rem;margin-top:1.5rem">
+      <div style="border:1px solid var(--border);padding:1rem;background:var(--black3)">
+        <div style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--rose);margin-bottom:.4rem;opacity:.7">The Problem</div>
+        <div style="font-size:12px;color:var(--muted2);line-height:1.75">How can a passive sensor transmit data without an onboard transmitter — using only reflected energy?</div>
+      </div>
+      <div style="border:1px solid var(--border);padding:1rem;background:var(--black3)">
+        <div style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--rose);margin-bottom:.4rem;opacity:.7">The Process</div>
+        <div style="font-size:12px;color:var(--muted2);line-height:1.75">Breadboarding, iterative testing with lab instruments, debugging real-world noise and frequency anomalies.</div>
+      </div>
+      <div style="border:1px solid var(--border);padding:1rem;background:var(--black3)">
+        <div style="font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--rose);margin-bottom:.4rem;opacity:.7">The Outcome</div>
+        <div style="font-size:12px;color:var(--muted2);line-height:1.75">Identified a fundamental design limitation; now redesigning from a research dissertation to rebuild on a sounder foundation.</div>
+      </div>
+    </div>
+
+    <div class="discovery-desc" style="max-width:100%">
+      <p style="margin-bottom:1rem">
+        <strong style="color:var(--white2);font-weight:400">The core idea</strong> behind this project is backscatter communication — a technique where a sensor node transmits data not by actively broadcasting a signal, but by selectively reflecting or absorbing an incoming one. The key component is a PZT (piezoelectric) transducer whose impedance can be switched between two states, effectively encoding binary information onto the reflected waveform. This approach is compelling for low-power and implantable sensing applications where a dedicated transmitter is impractical.
+      </p>
+      <p style="margin-bottom:1rem">
+        <strong style="color:var(--white2);font-weight:400">My role</strong> throughout the semester was to physically realise the circuit — breadboarding the design, assembling duplicate copies for comparative testing, and characterising their behaviour using signal generators and oscilloscopes. This was my first sustained experience with RF-adjacent hardware and lab instrumentation at this level of precision, and it forced me to develop systematic measurement habits and a sharper intuition for what "good" versus "noisy" data looks like on a scope trace.
+      </p>
+
+      <!-- IMAGE 1: Breadboard photo — place your breadboard photo at images/discovery/breadboard.jpg -->
+      <div style="margin:1.5rem 0">
+        <img src="images/discovery/breadboard.jpeg"
+             alt="Backscatter circuit on breadboard"
+             style="width:100%;max-height:500px;object-fit:cover;border:1px solid var(--border);display:block;"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div style="display:none;border:1px dashed var(--border2);height:180px;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;background:var(--black3)">
+          <span style="font-size:11px;color:var(--muted);letter-spacing:.08em">[ Add breadboard photo → images/discovery/breadboard.jpeg ]</span>
+        </div>
+        <div style="font-size:10px;color:var(--muted);letter-spacing:.06em;margin-top:.5rem;text-align:center">Breadboard implementation of the backscatter circuit</div>
+      </div>
+
+      <p style="margin-bottom:1rem">
+        <strong style="color:var(--white2);font-weight:400">The challenges were real.</strong> Component availability caused repeated delays — substitutions that look equivalent on a datasheet can behave very differently at the frequencies we were targeting. The most persistent anomaly was a resonance shift: the circuit was designed to switch into communication mode at 330 kHz, but consistently triggered closer to 310 kHz instead. Hunting down the cause involved methodically isolating variables across multiple board builds. Even after correcting that offset, the reflected data waveforms did not match expected output — the signal shape was wrong in ways that pointed beyond a simple component or layout issue.
+      </p>
+
+      <!-- IMAGE 2: Oscilloscope screenshot — place at images/discovery/oscilloscope.jpeg -->
+      <div style="margin:1.5rem 0">
+        <img src="images/discovery/oscilloscope.jpeg"
+             alt="Oscilloscope trace showing frequency anomaly"
+             style="width:100%;max-height:500px;object-fit:cover;border:1px solid var(--border);display:block;"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div style="display:none;border:1px dashed var(--border2);height:180px;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;background:var(--black3)">
+          <span style="font-size:11px;color:var(--muted);letter-spacing:.08em">[ Add oscilloscope screenshot → images/discovery/oscilloscope.jpeg ]</span>
+        </div>
+        <div style="font-size:10px;color:var(--muted);letter-spacing:.06em;margin-top:.5rem;text-align:center">Oscilloscope trace — note the resonance shift from target 330 kHz to ~310 kHz</div>
+      </div>
+
+      <p style="margin-bottom:1rem">
+        <strong style="color:var(--white2);font-weight:400">That diagnosis became a turning point.</strong> Rather than continuing to patch a flawed implementation, the team recognised that the anomalies likely stem from a limitation in the original circuit architecture itself. We are now redesigning the circuit from the ground up in KiCad, guided by a published dissertation on backscatter topology. The failure taught me something that no working prototype could: how to read an experiment's results as a signal about design assumptions, not just execution quality — and how to decide when iteration stops and a deeper rethink begins.
+      </p>
+
+      <!-- IMAGE 3: KiCad schematic — place at images/discovery/kicad-schematic.png -->
+      <!-- <div style="margin:1.5rem 0">
+        <img src="images/discovery/kicad-schematic.png"
+             alt="KiCad redesign schematic"
+             style="width:100%;border:1px solid var(--border);display:block;"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div style="display:none;border:1px dashed var(--border2);height:180px;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;background:var(--black3)">
+          <span style="font-size:11px;color:var(--muted);letter-spacing:.08em">[ Add KiCad schematic export → images/discovery/kicad-schematic.png ]</span>
+        </div>
+        <div style="font-size:10px;color:var(--muted);letter-spacing:.06em;margin-top:.5rem;text-align:center">Revised circuit schematic in KiCad — redesign in progress</div>
+      </div> -->
+
+      <p>
+        <strong style="color:var(--white2);font-weight:400">Looking ahead,</strong> there is still significant work to do. The KiCad redesign is ongoing, and the goal is to fabricate and test a new board before the semester closes. I will be continuing this research into next semester — and as I move deeper into the ECE curriculum and take more relevant coursework, I expect to be able to contribute more independently and at a greater technical depth. This project has made it clear that the intersection of hardware design, RF systems, and low-power communication is genuinely where I want to spend my time — and it has given me a concrete foundation to build from.
+      </p>
+    </div>
+
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;margin-bottom:1.5rem">
+      <span class="ptag" style="border-color:var(--rose-dim);color:var(--rose)">Backscatter RF</span>
+      <span class="ptag">PZT Transducer</span>
+      <span class="ptag">Oscilloscope</span>
+      <span class="ptag">Signal Generator</span>
+      <span class="ptag">Circuit Design</span>
+      <span class="ptag">Impedance Matching</span>
+      <span class="ptag">Breadboarding</span>
+    </div>
+
+    <div style="border:1px solid var(--border);background:var(--black3);padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem">
+      <div style="width:6px;height:6px;border-radius:50%;background:var(--rose);flex-shrink:0;box-shadow:0 0 8px var(--rose)"></div>
+      <div style="font-size:12px;color:var(--muted2);letter-spacing:.04em"><span style="color:var(--white2)">ECE Skill Gained:</span> &nbsp;Hands-on lab instrumentation (oscilloscopes &amp; signal generators), circuit characterisation, systematic debugging methodology, and reading academic literature to inform hardware redesign.</div>
+    </div>
+
+  </div>
+
+  <div class="projects-list reveal" style="margin-top:3rem">
+
+    <!-- Project row 1 -->
+    <div class="project-row" tabindex="0" onclick="toggleProject(this)">
+      <span class="project-num"><em>01</em></span>
+      <div>
+        <div class="project-title">PosturePal</div>
+      </div>
+      <div class="project-desc">
+        A sensor-embedded plushie that monitors and corrects posture in real time —
+        hardware meets soft robotics meets everyday life.
+      </div>
+      <div class="project-tags">
+        <span class="ptag">Embedded</span>
+        <span class="ptag">C</span>
+        <span class="ptag">Sensors</span>
+        <span class="ptag">Hardware</span>
+      </div>
+    </div>
+    <div class="project-expand">
+      <strong>PosturePal — Hardware + Embedded Systems</strong>
+      PosturePal is an embedded systems project that addresses the widespread problem of
+      poor posture during long study or work sessions. The device integrates pressure
+      sensors and an inertial measurement unit into a soft plushie form factor, making
+      it unobtrusive and approachable rather than clinical. When the system detects a
+      sustained deviation from calibrated baseline posture, it delivers a gentle haptic
+      prompt through a small vibration motor. The firmware is written in C and runs on
+      a low-power microcontroller, with a custom calibration routine that adapts to each
+      user's natural seated position. This project sharpened my skills in sensor
+      interfacing, interrupt-driven firmware architecture, and the challenge of
+      translating a hardware idea into a polished physical object.
+    </div>
+
+    <!-- Project row 2 -->
+    <div class="project-row" tabindex="0" onclick="toggleProject(this)">
+      <span class="project-num"><em>02</em></span>
+      <div>
+        <div class="project-title">Radnel</div>
+      </div>
+      <div class="project-desc">
+        An agentic calendar that manages tasks intelligently — understands context,
+        prioritises deadlines, and reduces scheduling friction.
+      </div>
+      <div class="project-tags">
+        <span class="ptag">Swift</span>
+        <span class="ptag">iOS</span>
+        <span class="ptag">AI Agents</span>
+        <span class="ptag">Python</span>
+      </div>
+    </div>
+    <div class="project-expand">
+      <strong>Radnel — iOS + AI Agent Platform</strong>
+      Radnel is a productivity application built for iOS that goes beyond a traditional
+      calendar. Rather than requiring users to manually schedule and reschedule tasks,
+      Radnel uses an AI agent pipeline to understand the nature of each task — its
+      deadline, estimated duration, dependencies, and the user's historical patterns —
+      and automatically generates an optimised daily schedule. The frontend is built in
+      SwiftUI with a clean, minimal interface designed to reduce cognitive overhead.
+      The agent backend is powered by a Python service that processes natural language
+      task descriptions and applies scheduling heuristics. This project deepened my
+      understanding of iOS app architecture, API design, and the practical challenges
+      of deploying AI-driven features in a mobile context where latency and reliability
+      are non-negotiable.
+    </div>
+
+    <!-- Project row 3 placeholder -->
+    <div class="project-row" style="opacity:.4;pointer-events:none">
+      <span class="project-num"><em>03</em></span>
+      <div><div class="project-title" style="color:var(--muted)">Coming soon</div></div>
+      <div class="project-desc">Next project in development.</div>
+      <div class="project-tags"><span class="ptag">TBD</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="reveal">
+    <p class="s-label">Experience</p>
+    <h2 class="s-title">Where I've <em>shown up</em></h2>
+  </div>
+  <div class="exp-list">
+
+    <div class="exp-item">
+      <div class="exp-left">
+        <div class="exp-date">Current</div>
+        <div class="exp-org">University iOS Club</div>
+      </div>
+      <div>
+        <div class="exp-role">Senior Developer</div>
+        <div class="exp-type">Engineering · Leadership</div>
+        <div class="exp-desc">
+          Building and shipping iOS applications used by real members of the university
+          community. As a senior developer, I take ownership of feature development
+          from design through deployment, conduct code reviews for junior contributors,
+          and help define the club's technical architecture. Mentoring newer members
+          through the gap between knowing Swift syntax and building something robust
+          and maintainable has been one of the most rewarding parts of this role.
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-left">
+        <div class="exp-date">Ongoing</div>
+        <div class="exp-org">Georgia Tech</div>
+      </div>
+      <div>
+        <div class="exp-role">Undergraduate Research</div>
+        <div class="exp-type">Communications Systems Lab</div>
+        <div class="exp-desc">
+          Contributing to hands-on research in communications systems at the
+          undergraduate level. Gaining exposure to signal processing methodology,
+          experimental design, and the discipline of producing results that can
+          withstand scrutiny. Learning to scope research questions, run controlled
+          experiments, and communicate findings clearly — skills that translate
+          directly into engineering practice.
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-left">
+        <div class="exp-date">High School</div>
+        <div class="exp-org">Model United Nations</div>
+      </div>
+      <div>
+        <div class="exp-role">Committee Chair</div>
+        <div class="exp-type">Leadership · Communication</div>
+        <div class="exp-desc">
+          Rose from delegate to committee chair, responsible for facilitating debate
+          among rooms of strong-willed participants and producing consensus under
+          time pressure. Wrote and evaluated position papers, managed procedural
+          rules in real time, and ensured that even the quietest voices in a room
+          had an opportunity to contribute. This experience built the communication
+          clarity and structured thinking under uncertainty that I now apply in
+          engineering contexts.
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-left">
+        <div class="exp-date">High School</div>
+        <div class="exp-org">Varsity Athletics</div>
+      </div>
+      <div>
+        <div class="exp-role">Cross Country — Varsity</div>
+        <div class="exp-type">Athletics · Discipline</div>
+        <div class="exp-desc">
+          Competed at varsity level in cross country running. Distance running is
+          a sport where the work is largely invisible — no one sees the early-morning
+          miles or the difficult training weeks. What it builds is a high tolerance for
+          uncomfortable progress and the ability to stay committed to a process long
+          enough for the results to compound. That patience shows up directly in the
+          way I approach long debugging sessions and iterative hardware design.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+  <div class="reveal">
+    <p class="s-label">Resume</p>
+    <h2 class="s-title">Full <em>résumé</em></h2>
+  </div>
+  <div class="resume-inner reveal">
+    <div class="resume-text">
+      <p>
+        A complete résumé covering my education at <strong>Georgia Tech</strong>,
+        technical skills, project work, and experience is available as a PDF download.
+        It is updated at the start of each semester to reflect current coursework,
+        club roles, and any new projects.
+      </p>
+      <p>
+        The résumé is formatted for both technical recruiting and academic research
+        applications. If you would like a version tailored to a specific role or
+        programme, feel free to reach out directly.
+      </p>
+    </div>
+      <div class="resume-aside">
+      <div class="resume-meta">
+        <div class="resume-meta-row">
+          <span class="resume-meta-key">Format</span>
+          <span class="resume-meta-val">PDF · A4</span>
+        </div>
+        <div class="resume-meta-row">
+          <span class="resume-meta-key">Updated</span>
+          <span class="resume-meta-val">Spring 2025</span>
+        </div>
+        <div class="resume-meta-row">
+          <span class="resume-meta-key">Pages</span>
+          <span class="resume-meta-val">1</span>
+        </div>
+      </div>
+      <a class="btn btn-rose" href="resume.pdf "target="_blank" style="justify-content:center">Download PDF ↓</a>
+      <a class="btn btn-ghost" href="#contact" style="justify-content:center">Request by email</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal">
+    <p class="s-label">Contact</p>
+    <h2 class="s-title">Get in <em>touch</em></h2>
+  </div>
+  <div class="contact-layout reveal">
+    <div>
+      <p class="contact-intro">
+        I am open to internship opportunities, research collaborations, and
+        interesting engineering conversations. If something on this site caught
+        your attention, or if you are building something where my background
+        could be useful — I would genuinely love to hear from you.
+      </p>
+      <div class="contact-links">
+        <a class="contact-link" href="/cdn-cgi/l/email-protection#1c6968777d6e6f745c7b7d68797f7432797869">
+          <span class="type">Email</span>
+          <span class="__cf_email__" data-cfemail="651007040204170c042502041100060d4b000110">[email&#160;protected]</span>
+          <span class="arrow">↗</span>
+        </a>
+        <a class="contact-link" href="https://linkedin.com/in/utkarshbagaria" target="_blank">
+          <span class="type">LinkedIn</span>
+          linkedin.com/in/utkarshbagaria
+          <span class="arrow">↗</span>
+        </a>
+        <a class="contact-link" href="https://github.com/utkarshbagaria" target="_blank">
+          <span class="type">GitHub</span>
+          github.com/utkarshbagaria
+          <span class="arrow">↗</span>
+        </a>
+      </div>
+    </div>
+    <form class="contact-form" onsubmit="handleSubmit(event)">
+      <div class="form-field">
+        <label class="form-label">Name</label>
+        <input type="text" placeholder="Your name" required/>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Email</label>
+        <input type="email" placeholder="your@email.com" required/>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Message</label>
+        <textarea placeholder="What's on your mind?" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-rose" style="align-self:flex-start" id="submitBtn">
+        Send message →
+      </button>
+    </form>
+  </div>
+</section>
+
+</div><!-- end .wrap -->
+
+<footer>
+  <span class="footer-mark">UB</span>
+  <span>Utkarsh Bagaria &nbsp;·&nbsp; Georgia Tech ECE &nbsp;·&nbsp; 2025</span>
+  <a href="#hero">Back to top ↑</a>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── NAV scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── Mobile menu
+document.getElementById('navOpen').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.add('open');
+});
+document.getElementById('mobileClose').addEventListener('click', closeMobile);
+function closeMobile() {
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+// ── Scroll reveal (sections + misc)
+const revIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); revIO.unobserve(e.target); }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => revIO.observe(el));
+
+// ── Experience items stagger
+const expIO = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.exp-item').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.12) + 's';
+  expIO.observe(el);
+});
+
+// ── CIRCUIT: animated current dot
+(function(){
+  const svg = document.querySelector('.circuit-svg');
+  if(!svg) return;
+
+  // Path waypoints [x, y] in viewBox coords — follows the wire loop clockwise
+  const pts = [
+    [60,90],[175,90],[245,90],[335,90],   // top-left → through resistor → top-right
+    [700,90],                              // top-right corner
+    [700,250],                             // down right side
+    [530,250],[450,250],[370,250],         // right → through inductor
+    [270,250],[224,250],[190,250],         // → through capacitor
+    [60,250],                              // bottom-left corner
+    [60,150],[60,90]                       // up left side → back to start
+  ];
+
+  let seg = 0, t = 0;
+  const speed = 0.008;
+  const dot = document.getElementById('currentDot');
+
+  // colour stops: change dot colour as it passes through each component zone
+  function dotColor(x, y) {
+    if (y < 120 && x > 170 && x < 340) return '#e8b4b8'; // resistor
+    if (y > 230 && x > 180 && x < 265) return '#b4c8e8'; // capacitor
+    if (y > 230 && x > 365 && x < 535) return '#b4e8c8'; // inductor
+    return '#e8b4b8';
+  }
+
+  function animDot() {
+    const a = pts[seg], b = pts[(seg+1) % pts.length];
+    const x = a[0] + (b[0]-a[0]) * t;
+    const y = a[1] + (b[1]-a[1]) * t;
+    dot.setAttribute('cx', x);
+    dot.setAttribute('cy', y);
+    dot.setAttribute('fill', dotColor(x, y));
+    t += speed;
+    if(t >= 1){ t = 0; seg = (seg+1) % pts.length; }
+    requestAnimationFrame(animDot);
+  }
+  animDot();
+})();
+
+// ── CIRCUIT: tooltips
+(function(){
+  const wrap = document.getElementById('circuitWrap');
+  if(!wrap) return;
+
+  function bindTip(compId, tipId) {
+    const comp = document.getElementById(compId);
+    const tip  = document.getElementById(tipId);
+    if(!comp || !tip) return;
+    comp.addEventListener('mouseenter', () => tip.classList.add('show'));
+    comp.addEventListener('mousemove', e => {
+      const r = wrap.getBoundingClientRect();
+      let x = e.clientX - r.left + 14;
+      let y = e.clientY - r.top  + 14;
+      if(x + 170 > r.width)  x = e.clientX - r.left - 175;
+      if(y + 160 > r.height) y = e.clientY - r.top  - 140;
+      tip.style.left = x + 'px';
+      tip.style.top  = y + 'px';
+    });
+    comp.addEventListener('mouseleave', () => tip.classList.remove('show'));
+  }
+
+  bindTip('comp-r', 'tip-r');
+  bindTip('comp-c', 'tip-c');
+  bindTip('comp-l', 'tip-l');
+})();
+
+// ── Project row expand / collapse
+function toggleProject(row) {
+  const expand = row.nextElementSibling;
+  if (!expand || !expand.classList.contains('project-expand')) return;
+  const isOpen = expand.classList.contains('open');
+  // close all
+  document.querySelectorAll('.project-expand').forEach(e => e.classList.remove('open'));
+  if (!isOpen) expand.classList.add('open');
+}
+
+// ─
+// ── Contact form
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = 'Sent ✓';
+  btn.style.background = 'var(--rose2)';
+  btn.disabled = true;
+}
+</script>
+</body>
+</html>
